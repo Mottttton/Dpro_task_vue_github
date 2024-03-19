@@ -4,8 +4,8 @@
     <form @submit.prevent="addTodo()">
       <el-input placeholder="todo" v-model="todo"></el-input>
     </form>
-    <div>
-      <TodoItem v-for="( todo, index ) in todos" :key="index" />
+    <el-row :gutter="12">
+      <TodoItem v-for="( todo, index ) in todos" :key="index" :todo="todo" :index="index" @click="removeTodo(index)" />
       <el-col :span="12" v-for="( issue, index ) in issues" :key="issue.id">
         <el-card class="box-card" shadow="hover" style="margin: 5px 0;">
           <el-row :gutter="12">
@@ -16,7 +16,7 @@
           </el-row>
         </el-card>
       </el-col>
-    </div>
+    </el-row>
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default {
     removeTodo(index) {
       this.todos.splice(index, 1)
     },
-    fetchIssue() {
+    fetchIssues() {
       client.get('/issues')
       .then((res) => {
         this.issues = res.data;
@@ -71,7 +71,7 @@ export default {
     },
   },
   created() {
-    this.fetchIssue();
+    this.fetchIssues();
   }
 }
 </script>
